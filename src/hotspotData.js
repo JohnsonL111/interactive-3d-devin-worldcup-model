@@ -32,8 +32,7 @@ export const HOTSPOT_DATA = {
     desc: 'Gold maple leaf centred on the back waistband — Canada\'s emblem anchoring the rear of the kit and complementing the jersey\'s chest emblem.',
     specs: [['Technique','Gold embroidery'],['Size','32mm'],['Position','Back centre waistband']],
     swatches: ['#C9A86A','#B8973A','#0A1E42','#162D5A'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A1E42" rx="8"/><g transform="translate(100,40) scale(2.0)"><path d="M0,-18 L2.5,-8 L10,-9 L6.5,0 L14,7 L7,5.5 L8.5,14 L0,10 L-8.5,14 L-7,5.5 L-14,7 L-6.5,0 L-10,-9 L-2.5,-8 Z" fill="#C9A86A"/></g></svg>`
-  },
+    imgPreview:  'public/images/mapleleaf.png' },
   blossom: {
     eyebrow: 'Signature Motif', title: 'Cherry Blossoms',
     desc: 'Scattered sakura petals cascade across the upper left shoulder, symbolizing renewal, community, and the fleeting beauty of spring in Vancouver.',
@@ -46,15 +45,13 @@ export const HOTSPOT_DATA = {
     desc: 'Gold embroidered maple leaf at the chest — Canada\'s icon. Gold thread catches light during play for a subtle shimmer effect.',
     specs: [['Technique','Gold thread embroidery'],['Size','38mm'],['Position','Left chest, 80mm from collar']],
     swatches: ['#C9A96A','#B8973A','#8C7228','#F2F3F0'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#1a1a1a" rx="8"/><g transform="translate(100,40) scale(2.2)"><path d="M0,-18 L3,-8 L13,-10 L8,0 L16,8 L8,6 L10,16 L0,12 L-10,16 L-8,6 L-16,8 L-8,0 L-13,-10 L-3,-8 Z" fill="#C9A96A"/></g></svg>`
-  },
+    imgPreview:  'public/images/mapleleaf.png'   },
   collar: {
     eyebrow: 'Cut & Construction', title: 'V-Collar Insert',
     desc: 'Modern V-insert collar with gold trim. Cut for athletic movement with gold edge detailing that ties the design language across all kit elements.',
     specs: [['Style','V-insert with trim'],['Material','Stretch woven'],['Accent','Gold satin edge tape']],
     swatches: ['#E8E9E5','#C9A96A','#F2F3F0','#0A2A5E'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#e8e9e5" rx="8"/><path d="M70,10 L100,50 L130,10" fill="none" stroke="#C9A96A" stroke-width="3" stroke-linecap="round"/><path d="M70,10 Q100,5 130,10" fill="#d8d9d5" stroke="rgba(200,169,106,0.5)" stroke-width="1"/></svg>`
-  },
+    imgPreview:  'public/images/collar.png'   },
   mountains: {
     eyebrow: 'Landscape Layer', title: 'Coast Mountains',
     desc: 'Topographic silhouettes of the Coast Mountains gradient from misty grey to deep navy. Three depth layers reflect the literal geography defining Vancouver\'s skyline.',
@@ -81,35 +78,35 @@ export const HOTSPOT_DATA = {
     desc: 'Full-length retroreflective strip down the centre back spine. 360° visibility at night, doubles as the Sea to Sky route line design motif.',
     specs: [['Length','Full torso ~350mm'],['Material','Retroreflective weave'],['Dual purpose','Safety + route line motif']],
     swatches: ['#DDEEFF','#EEF4FF','#C9A96A','#0A2A5E'],
-    imgPreview: 'images/back.png',
+    imgPreview: 'public/images/back.png',
   },
   mesh: {
     eyebrow: 'Construction Detail', title: 'Underarm Mesh Panel',
     desc: 'Breathable engineered mesh panels at the underarm and side seams allow airflow during high-intensity play, keeping the kit cool and lightweight.',
     specs: [['Material','Open-weave polyester mesh'],['Placement','Underarm & side panels'],['Function','Active ventilation']],
     swatches: ['#F2F3F0','#C9A96A','#0A2A5E','#8B9AB0'],
-    imgPreview: 'images/mesh.png',
+    imgPreview: 'public/images/mesh.png',
   },
   fabric: {
     eyebrow: 'Performance Material', title: 'Performance Knit',
     desc: 'Ultra-lightweight performance knit construction — moisture-wicking, four-way stretch, and designed to maintain shape through 90 minutes of play.',
     specs: [['Weight','120 gsm'],['Stretch','4-way'],['Tech','Moisture-wicking DryFit']],
     swatches: ['#F2F3F0','#C9A96A','#0A2A5E','#061830'],
-    imgPreview: 'images/material.png',
+    imgPreview: 'public/images/material.png',
   },
   tag: {
     eyebrow: 'Care & Edition', title: 'Care & Edition Tag',
     desc: 'Woven care label on the lower left interior hem — includes FIFA World Cup 2026 edition number, care instructions, and the Vancouver host city mark.',
     specs: [['Edition','FIFA World Cup 2026'],['Location','Lower left interior hem'],['Detail','Host city mark + care icons']],
     swatches: ['#C9A96A','#0A2A5E','#fff','#1a1a1a'],
-    imgPreview: 'images/tag.png',
+    imgPreview: 'public/images/tag.png',
   },
   route: {
     eyebrow: 'Narrative Line', title: 'Sea to Sky Route',
     desc: 'Dashed gold line tracing the Sea to Sky Highway from Vancouver through Squamish to Whistler. Glows in low light as a reflective element.',
     specs: [['Route','Vancouver → Squamish → Whistler'],['Length','~120km mapped to 280mm'],['Effect','Reflective glow at night']],
     swatches: ['#C9A96A','#B8973A','#fff','#0A2A5E'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#061830" rx="8"/><path d="M100,8 Q103,28 99,48 Q97,60 100,72" fill="none" stroke="#C9A96A" stroke-width="2.5" stroke-dasharray="6,5"/><circle cx="100" cy="10" r="4" fill="#C9A96A"/><text x="110" y="14" fill="#C9A96A" font-size="8">WHISTLER</text><circle cx="99" cy="46" r="3.5" fill="#C9A96A"/><text x="108" y="50" fill="#C9A96A" font-size="7">SQUAMISH</text><circle cx="100" cy="72" r="4" fill="#C9A96A"/><text x="62" y="76" fill="#C9A96A" font-size="7">VANCOUVER</text></svg>`
+    imgPreview: 'public/images/back.png'
   },
   coords: {
     eyebrow: 'Woven Label', title: 'Coordinate Tag',
