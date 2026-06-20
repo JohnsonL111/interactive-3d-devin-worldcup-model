@@ -39,7 +39,7 @@ export const HOTSPOT_DATA = {
     desc: 'Scattered sakura petals cascade across the upper left shoulder, symbolizing renewal, community, and the fleeting beauty of spring in Vancouver.',
     specs: [['Placement','Left shoulder cascade'],['Technique','Sublimation print'],['Colors','Sakura Pink + Gold accent']],
     swatches: ['#E7C7D3','#EDA0B5','#C9A96A','#F2F3F0'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A2A5E" rx="8"/><g opacity="0.9"><ellipse cx="80" cy="38" rx="9" ry="6" fill="#F2B8C6" transform="rotate(-20,80,38)"/><ellipse cx="90" cy="33" rx="8" ry="5.5" fill="#EDA0B5" transform="rotate(15,90,33)"/><ellipse cx="76" cy="44" rx="8" ry="5" fill="#F5C5D0" transform="rotate(-45,76,44)"/><circle cx="83" cy="39" r="3" fill="#C9A96A"/></g><line x1="60" y1="25" x2="85" y2="45" stroke="#8B5A6B" stroke-width="1.5" opacity="0.7"/></svg>`
+    imgPreview: 'images/cherryblossoms.png',
   },
   maple: {
     eyebrow: 'National Symbol', title: 'Embroidered Maple Leaf',
@@ -81,7 +81,28 @@ export const HOTSPOT_DATA = {
     desc: 'Full-length retroreflective strip down the centre back spine. 360° visibility at night, doubles as the Sea to Sky route line design motif.',
     specs: [['Length','Full torso ~350mm'],['Material','Retroreflective weave'],['Dual purpose','Safety + route line motif']],
     swatches: ['#DDEEFF','#EEF4FF','#C9A96A','#0A2A5E'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A2A5E" rx="8"/><rect x="97" y="5" width="6" height="70" fill="rgba(220,230,245,0.4)" rx="3"/><rect x="98.5" y="5" width="3" height="70" fill="rgba(255,255,255,0.85)" rx="1.5"/></svg>`
+    imgPreview: 'images/back.png',
+  },
+  mesh: {
+    eyebrow: 'Construction Detail', title: 'Underarm Mesh Panel',
+    desc: 'Breathable engineered mesh panels at the underarm and side seams allow airflow during high-intensity play, keeping the kit cool and lightweight.',
+    specs: [['Material','Open-weave polyester mesh'],['Placement','Underarm & side panels'],['Function','Active ventilation']],
+    swatches: ['#F2F3F0','#C9A96A','#0A2A5E','#8B9AB0'],
+    imgPreview: 'images/mesh.png',
+  },
+  fabric: {
+    eyebrow: 'Performance Material', title: 'Performance Knit',
+    desc: 'Ultra-lightweight performance knit construction — moisture-wicking, four-way stretch, and designed to maintain shape through 90 minutes of play.',
+    specs: [['Weight','120 gsm'],['Stretch','4-way'],['Tech','Moisture-wicking DryFit']],
+    swatches: ['#F2F3F0','#C9A96A','#0A2A5E','#061830'],
+    imgPreview: 'images/material.png',
+  },
+  tag: {
+    eyebrow: 'Care & Edition', title: 'Care & Edition Tag',
+    desc: 'Woven care label on the lower left interior hem — includes FIFA World Cup 2026 edition number, care instructions, and the Vancouver host city mark.',
+    specs: [['Edition','FIFA World Cup 2026'],['Location','Lower left interior hem'],['Detail','Host city mark + care icons']],
+    swatches: ['#C9A96A','#0A2A5E','#fff','#1a1a1a'],
+    imgPreview: 'images/tag.png',
   },
   route: {
     eyebrow: 'Narrative Line', title: 'Sea to Sky Route',
