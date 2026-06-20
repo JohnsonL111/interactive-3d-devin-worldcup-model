@@ -6,11 +6,6 @@
 [![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
 > A real-time 3D showcase of the Vancouver FIFA World Cup 2026 Host City Kit concept. Explore every design detail of the jersey and shorts in an immersive, interactive experience — drag, flip, zoom, and discover the story woven into every stitch.
-
-![Kit Viewer Demo](docs/demo.gif)
-
-> **To generate the GIF:** Open the live app at `localhost:5173`, record a ~6 second screen capture showing the auto-rotate, a flip, and a hotspot zoom using [ScreenToGif](https://www.screentogif.com/) or Xbox Game Bar (`Win+G`), then save it to `docs/demo.gif`.
-
 ---
 
 ## Overview
