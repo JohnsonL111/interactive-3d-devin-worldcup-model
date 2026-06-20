@@ -4,8 +4,19 @@ import ShortsViewer3D from './ShortsViewer3D'
 import DetailPanel from './DetailPanel'
 import { HOTSPOT_DATA } from './hotspotData'
 
+const BASE = import.meta.env.BASE_URL
+
+// Realistic mode uses the cropped design photos as textures
+const REALISTIC_URLS = {
+  jerseyFront: `${BASE}demo/jersey_front.png`,
+  jerseyBack:  `${BASE}demo/jersey_back.png`,
+  shortsFront: `${BASE}demo/shorts_front.png`,
+  shortsBack:  `${BASE}demo/shorts_back.png`,
+}
+
 export default function App() {
   const [activeDetail, setActiveDetail] = useState(null)
+  const [viewMode, setViewMode] = useState('model') // 'model' | 'realistic'
 
   // Shared rotation state — live refs so both viewers stay perfectly in sync
   const rotY = useRef(0.3)
@@ -23,6 +34,9 @@ export default function App() {
     setActiveDetail(HOTSPOT_DATA[id] || null)
   }, [])
 
+  const isRealistic = viewMode === 'realistic'
+  const urls = isRealistic ? REALISTIC_URLS : { jerseyFront: null, jerseyBack: null, shortsFront: null, shortsBack: null }
+
   return (
     <div style={{
       width: '100vw', height: '100vh',
@@ -31,15 +45,40 @@ export default function App() {
       fontFamily: 'system-ui, sans-serif',
     }}>
       {/* Header */}
-      <div style={{ padding: '16px 32px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexShrink: 0 }}>
+      <div style={{ padding: '16px 32px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
         <div>
           <p style={{ fontSize: 11, letterSpacing: '0.15em', color: '#C9A96A', margin: '0 0 4px', textTransform: 'uppercase' }}>FIFA World Cup 2026</p>
           <h1 style={{ fontSize: 22, fontWeight: 500, color: '#fff', margin: 0 }}>
             Vancouver <span style={{ color: '#C9A96A' }}>Host City Kit</span>
           </h1>
         </div>
-        <div style={{ background: 'rgba(201,169,106,0.12)', border: '0.5px solid #C9A96A', borderRadius: 20, padding: '5px 14px', fontSize: 11, color: '#C9A96A', letterSpacing: '0.1em' }}>
-          CONCEPT
+
+        {/* View mode toggle */}
+        <div style={{
+          display: 'flex', alignItems: 'center',
+          background: 'rgba(255,255,255,0.05)',
+          border: '0.5px solid rgba(201,169,106,0.3)',
+          borderRadius: 24, padding: 3, gap: 2,
+        }}>
+          {['model', 'realistic'].map(mode => (
+            <button
+              key={mode}
+              onClick={() => setViewMode(mode)}
+              style={{
+                background: viewMode === mode ? '#C9A96A' : 'transparent',
+                border: 'none',
+                color: viewMode === mode ? '#0a1628' : 'rgba(255,255,255,0.45)',
+                borderRadius: 20, padding: '5px 14px',
+                fontSize: 11, letterSpacing: '0.08em',
+                cursor: 'pointer', fontFamily: 'system-ui, sans-serif',
+                fontWeight: viewMode === mode ? 600 : 400,
+                textTransform: 'capitalize',
+                transition: 'all 0.18s',
+              }}
+            >
+              {mode === 'model' ? '3D Model' : 'Realistic'}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -54,6 +93,8 @@ export default function App() {
             sharedRotX={rotX}
             onFlipReady={handleFlipReady}
             onZoomBackReady={handleZoomBackReady}
+            customFrontUrl={urls.jerseyFront}
+            customBackUrl={urls.jerseyBack}
           />
         </div>
 
@@ -63,6 +104,8 @@ export default function App() {
             onHotspotClick={handleHotspot}
             rotY={rotY}
             rotX={rotX}
+            customFrontUrl={urls.shortsFront}
+            customBackUrl={urls.shortsBack}
           />
         </div>
       </div>

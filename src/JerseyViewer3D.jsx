@@ -221,21 +221,21 @@ function buildSleeveGeometry(side=1) {
 
 // Hotspot UV positions [uFrac, vFrac] mapped to world positions on the mesh
 const HOTSPOTS = [
-  { id:'blossom',  u:0.22, v:0.12, label:'Cherry Blossoms' },
-  { id:'maple',    u:0.50, v:0.20, label:'Maple Leaf' },
-  { id:'collar',   u:0.50, v:0.04, label:'V-Collar' },
+  { id:'blossom',  u:0.22, v:0.14, label:'Cherry Blossoms' },
+  { id:'maple',    u:0.50, v:0.22, label:'Maple Leaf' },
+  { id:'collar',   u:0.50, v:0.13, label:'V-Collar' },
   { id:'mountains',u:0.72, v:0.42, label:'Coast Mountains' },
-  { id:'waves',    u:0.65, v:0.76, label:'Ocean Waves' },
-  { id:'hem',      u:0.20, v:0.94, label:'Reflective Hem' },
+  { id:'waves',    u:0.65, v:0.74, label:'Ocean Waves' },
+  { id:'hem',      u:0.25, v:0.87, label:'Reflective Hem' },
 ]
 
 const HOTSPOTS_BACK = [
   { id:'spine',  u:0.50, v:0.15, label:'Spine Strip' },
   { id:'route',  u:0.52, v:0.45, label:'Sea to Sky Route' },
-  { id:'coords', u:0.50, v:0.91, label:'Coordinate Tag' },
+  { id:'coords', u:0.50, v:0.87, label:'Coordinate Tag' },
 ]
 
-export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX, onFlipReady, onZoomBackReady }) {
+export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX, onFlipReady, onZoomBackReady, customFrontUrl, customBackUrl }) {
   const mountRef = useRef(null)
   const stateRef = useRef({
     renderer:null, scene:null, camera:null, jerseyGroup:null,
@@ -248,6 +248,7 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX,
     zoomFromPos: new THREE.Vector3(), zoomFromTarget: new THREE.Vector3(),
     zoomToPos:   new THREE.Vector3(), zoomToTarget:   new THREE.Vector3(),
     camTarget: new THREE.Vector3(0, 0.1, 0),   // current look-at point
+    frontMesh: null, backMesh: null, sleeveMeshes: [],
   })
 
   const flip = useCallback(() => {
@@ -282,8 +283,9 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX,
     s.zoomProgress = 0
     s.zoomFromPos.copy(s.camera.position)
     s.zoomFromTarget.copy(s.camTarget)
-    s.zoomToPos.set(0, 0.1, 3.8)
-    s.zoomToTarget.set(0, 0.1, 0)
+    const baseZ = s.sleeveMeshes.length > 0 && !s.sleeveMeshes[0].visible ? 3.3 : 4.4
+    s.zoomToPos.set(0, 0, baseZ)
+    s.zoomToTarget.set(0, 0, 0)
     s.autoRotateTimer = setTimeout(() => { s.autoRotate = true }, 1200)
   }, [])
 
@@ -303,7 +305,7 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX,
       const spriteTex = new THREE.CanvasTexture(spriteCanvas)
       const spriteMat = new THREE.SpriteMaterial({ map:spriteTex, transparent:true, opacity:0.9, depthTest:false })
       const sprite = new THREE.Sprite(spriteMat)
-      sprite.scale.set(0.12,0.12,1)
+      sprite.scale.set(0.09,0.09,1)
       // tag which face this hotspot belongs to so we can show/hide per frame
       sprite.userData = { id: h.id, isFront: isFrontSide }
       // Map UV to world position on the jersey mesh
@@ -333,8 +335,9 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX,
     s.scene = scene
 
     const camera = new THREE.PerspectiveCamera(38,W/H,0.01,100)
-    camera.position.set(0,0.1,3.8)
+    camera.position.set(0,0,4.4)
     s.camera = camera
+    s.camTarget.set(0,0,0)
 
     scene.add(new THREE.AmbientLight(0xffffff,0.7))
     const key = new THREE.DirectionalLight(0xFFF5E0,1.4); key.position.set(-2,3,4); scene.add(key)
@@ -352,9 +355,10 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX,
     const jerseyGeo = buildJerseyGeometry()
 
     // Front face mesh (visible from front, +z)
-    const frontMat = new THREE.MeshStandardMaterial({ map:frontTex, roughness:0.75, metalness:0.05, side:THREE.FrontSide })
+    const frontMat = new THREE.MeshStandardMaterial({ map:frontTex, roughness:0.75, metalness:0.05, side:THREE.FrontSide, transparent:true, alphaTest:0.1 })
     const frontMesh = new THREE.Mesh(jerseyGeo, frontMat)
     jerseyGroup.add(frontMesh)
+    s.frontMesh = frontMesh
 
     // Back face mesh — same geometry rotated 180° so it faces the camera when flipped.
     // Because the rotation mirrors UVs horizontally, we pre-mirror the back canvas so text reads correctly.
@@ -366,10 +370,11 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX,
     mCtx.drawImage(backCanvas, 0, 0)
     const mirroredBackTex = new THREE.CanvasTexture(mirroredBackCanvas)
     mirroredBackTex.colorSpace = THREE.SRGBColorSpace
-    const backMat = new THREE.MeshStandardMaterial({ map:mirroredBackTex, roughness:0.75, metalness:0.05, side:THREE.FrontSide })
+    const backMat = new THREE.MeshStandardMaterial({ map:mirroredBackTex, roughness:0.75, metalness:0.05, side:THREE.FrontSide, transparent:true, alphaTest:0.1 })
     const backMesh = new THREE.Mesh(jerseyGeo, backMat)
     backMesh.rotation.y = Math.PI
     jerseyGroup.add(backMesh)
+    s.backMesh = backMesh
 
     // Sleeve texture
     const sc2 = document.createElement('canvas'); sc2.width=256; sc2.height=512
@@ -379,7 +384,7 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX,
     sc2ctx.fillStyle=slG; sc2ctx.fillRect(0,0,256,512)
     const sleeveTex = new THREE.CanvasTexture(sc2); sleeveTex.colorSpace=THREE.SRGBColorSpace
     const sleeveMat = new THREE.MeshStandardMaterial({ map:sleeveTex, roughness:0.78, metalness:0.04 })
-    ;[-1,1].forEach(side => { const m=new THREE.Mesh(buildSleeveGeometry(side),sleeveMat); jerseyGroup.add(m) })
+    ;[-1,1].forEach(side => { const m=new THREE.Mesh(buildSleeveGeometry(side),sleeveMat); jerseyGroup.add(m); s.sleeveMeshes.push(m) })
 
     addHotspots(s, HOTSPOTS, true)
     addHotspots(s, HOTSPOTS_BACK, false)
@@ -493,6 +498,68 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX,
       if(mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
     }
   }, [])
+
+  // Toggle sleeves + camera distance when switching between model / realistic
+  useEffect(() => {
+    const s = stateRef.current
+    const realistic = !!customFrontUrl
+    s.sleeveMeshes.forEach(m => { m.visible = !realistic })
+    if (s.camera) {
+      const targetZ = realistic ? 3.3 : 4.4
+      s.camera.position.set(0, 0, targetZ)
+      s.camTarget.set(0, 0, 0)
+      s.camera.lookAt(s.camTarget)
+    }
+  }, [customFrontUrl])
+
+  // Hot-swap front texture; null = restore default painted canvas
+  useEffect(() => {
+    const s = stateRef.current
+    if (!s.frontMesh) return
+    if (!customFrontUrl) {
+      const tex = new THREE.CanvasTexture(paintJerseyTexture(true))
+      tex.colorSpace = THREE.SRGBColorSpace
+      s.frontMesh.material.map = tex
+      s.frontMesh.material.needsUpdate = true
+      return
+    }
+    const loader = new THREE.TextureLoader()
+    loader.load(customFrontUrl, (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace
+      s.frontMesh.material.map = tex
+      s.frontMesh.material.needsUpdate = true
+    })
+  }, [customFrontUrl])
+
+  // Hot-swap back texture; null = restore default painted canvas (pre-mirrored)
+  useEffect(() => {
+    const s = stateRef.current
+    if (!s.backMesh) return
+    if (!customBackUrl) {
+      const backCanvas = paintJerseyTexture(false)
+      const m = document.createElement('canvas')
+      m.width = backCanvas.width; m.height = backCanvas.height
+      const mCtx = m.getContext('2d')
+      mCtx.translate(m.width, 0); mCtx.scale(-1, 1); mCtx.drawImage(backCanvas, 0, 0)
+      const tex = new THREE.CanvasTexture(m)
+      tex.colorSpace = THREE.SRGBColorSpace
+      s.backMesh.material.map = tex
+      s.backMesh.material.needsUpdate = true
+      return
+    }
+    const img = new Image()
+    img.onload = () => {
+      const c = document.createElement('canvas')
+      c.width = img.naturalWidth; c.height = img.naturalHeight
+      const ctx = c.getContext('2d')
+      ctx.translate(c.width, 0); ctx.scale(-1, 1); ctx.drawImage(img, 0, 0)
+      const tex = new THREE.CanvasTexture(c)
+      tex.colorSpace = THREE.SRGBColorSpace
+      s.backMesh.material.map = tex
+      s.backMesh.material.needsUpdate = true
+    }
+    img.src = customBackUrl
+  }, [customBackUrl])
 
   return <div ref={mountRef} style={{ width:'100%', height:'100%', cursor:'grab' }} />
 }

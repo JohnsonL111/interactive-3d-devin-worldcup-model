@@ -305,10 +305,11 @@ function uvToWorldShorts(u, v) {
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
-export default function ShortsViewer3D({ onHotspotClick, rotY, rotX, onGroupReady }) {
+export default function ShortsViewer3D({ onHotspotClick, rotY, rotX, onGroupReady, customFrontUrl, customBackUrl }) {
   const mountRef = useRef(null)
   const stateRef = useRef({
     renderer: null, scene: null, camera: null, shortsGroup: null,
+    frontMesh: null, backMesh: null,
     animFrameId: null, hotspotSprites: [],
   })
 
@@ -328,7 +329,7 @@ export default function ShortsViewer3D({ onHotspotClick, rotY, rotX, onGroupRead
         transparent: true, opacity: 0.92, depthTest: false,
       })
       const sprite = new THREE.Sprite(mat)
-      sprite.scale.set(0.13,0.13,1)
+      sprite.scale.set(0.09,0.09,1)
       sprite.userData = { id: h.id, isFront: isFrontSide }
       const { wx, wy } = uvToWorldShorts(h.u, h.v)
       sprite.position.set(wx, wy, isFrontSide ? 0.18 : -0.18)
@@ -365,16 +366,19 @@ export default function ShortsViewer3D({ onHotspotClick, rotY, rotX, onGroupRead
     // Front face
     const frontTex = new THREE.CanvasTexture(paintShortsFront())
     frontTex.colorSpace = THREE.SRGBColorSpace
-    shortsGroup.add(new THREE.Mesh(geo,
-      new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.80, metalness: 0.03, side: THREE.FrontSide })))
+    const frontMesh = new THREE.Mesh(geo,
+      new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.80, metalness: 0.03, side: THREE.FrontSide, transparent: true, alphaTest: 0.1 }))
+    shortsGroup.add(frontMesh)
+    s.frontMesh = frontMesh
 
     // Back face — pre-mirrored, rotated 180° Y
     const backTex = new THREE.CanvasTexture(paintShortsBack())
     backTex.colorSpace = THREE.SRGBColorSpace
     const backMesh = new THREE.Mesh(geo,
-      new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.80, metalness: 0.03, side: THREE.FrontSide }))
+      new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.80, metalness: 0.03, side: THREE.FrontSide, transparent: true, alphaTest: 0.1 }))
     backMesh.rotation.y = Math.PI
     shortsGroup.add(backMesh)
+    s.backMesh = backMesh
 
     addHotspots(s, HOTSPOTS_SHORTS_FRONT, true)
     addHotspots(s, HOTSPOTS_SHORTS_BACK, false)
@@ -427,6 +431,50 @@ export default function ShortsViewer3D({ onHotspotClick, rotY, rotX, onGroupRead
     loop()
     return () => cancelAnimationFrame(s.animFrameId)
   }, [rotY, rotX])
+
+  // Hot-swap front texture; null = restore default painted canvas
+  useEffect(() => {
+    const s = stateRef.current
+    if (!s.frontMesh) return
+    if (!customFrontUrl) {
+      const tex = new THREE.CanvasTexture(paintShortsFront())
+      tex.colorSpace = THREE.SRGBColorSpace
+      s.frontMesh.material.map = tex
+      s.frontMesh.material.needsUpdate = true
+      return
+    }
+    const loader = new THREE.TextureLoader()
+    loader.load(customFrontUrl, (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace
+      s.frontMesh.material.map = tex
+      s.frontMesh.material.needsUpdate = true
+    })
+  }, [customFrontUrl])
+
+  // Hot-swap back texture; null = restore default painted canvas (pre-mirrored)
+  useEffect(() => {
+    const s = stateRef.current
+    if (!s.backMesh) return
+    if (!customBackUrl) {
+      const tex = new THREE.CanvasTexture(paintShortsBack())
+      tex.colorSpace = THREE.SRGBColorSpace
+      s.backMesh.material.map = tex
+      s.backMesh.material.needsUpdate = true
+      return
+    }
+    const img = new Image()
+    img.onload = () => {
+      const c = document.createElement('canvas')
+      c.width = img.naturalWidth; c.height = img.naturalHeight
+      const ctx = c.getContext('2d')
+      ctx.translate(c.width, 0); ctx.scale(-1, 1); ctx.drawImage(img, 0, 0)
+      const tex = new THREE.CanvasTexture(c)
+      tex.colorSpace = THREE.SRGBColorSpace
+      s.backMesh.material.map = tex
+      s.backMesh.material.needsUpdate = true
+    }
+    img.src = customBackUrl
+  }, [customBackUrl])
 
   return <div ref={mountRef} style={{ width:'100%', height:'100%' }} />
 }
