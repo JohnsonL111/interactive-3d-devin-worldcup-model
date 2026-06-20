@@ -64,7 +64,7 @@ const MODES = [
   { key: 'model',    label: '3D Model'  },
   { key: 'realistic',label: 'Realistic' },
   { key: 'blender',  label: 'Blender'   },
-  { key: 'photos',   label: 'Photos'    },
+  { key: 'photos',   label: 'Concept'   },
 ]
 
 export default function App() {
