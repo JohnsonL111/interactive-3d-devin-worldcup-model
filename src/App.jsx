@@ -6,7 +6,7 @@ import { HOTSPOT_DATA } from './hotspotData'
 
 const BASE = import.meta.env.BASE_URL
 
-// Realistic mode uses the cropped design photos as textures
+// Realistic mode uses the background-removed design photos
 const REALISTIC_URLS = {
   jerseyFront: `${BASE}demo/jersey_front.png`,
   jerseyBack:  `${BASE}demo/jersey_back.png`,
@@ -14,9 +14,23 @@ const REALISTIC_URLS = {
   shortsBack:  `${BASE}demo/shorts_back.png`,
 }
 
+// Blender mode uses the renders from the 3d branch
+const BLENDER_URLS = {
+  jerseyFront: `${BASE}demo/blender_front.png`,
+  jerseyBack:  `${BASE}demo/blender_back.png`,
+  shortsFront: null,
+  shortsBack:  null,
+}
+
+const MODES = [
+  { key: 'model',    label: '3D Model'  },
+  { key: 'realistic',label: 'Realistic' },
+  { key: 'blender',  label: 'Blender'   },
+]
+
 export default function App() {
   const [activeDetail, setActiveDetail] = useState(null)
-  const [viewMode, setViewMode] = useState('model') // 'model' | 'realistic'
+  const [viewMode, setViewMode] = useState('model') // 'model' | 'realistic' | 'blender'
 
   // Shared rotation state — live refs so both viewers stay perfectly in sync
   const rotY = useRef(0.3)
@@ -34,8 +48,9 @@ export default function App() {
     setActiveDetail(HOTSPOT_DATA[id] || null)
   }, [])
 
-  const isRealistic = viewMode === 'realistic'
-  const urls = isRealistic ? REALISTIC_URLS : { jerseyFront: null, jerseyBack: null, shortsFront: null, shortsBack: null }
+  const urls = viewMode === 'realistic' ? REALISTIC_URLS
+             : viewMode === 'blender'   ? BLENDER_URLS
+             : { jerseyFront: null, jerseyBack: null, shortsFront: null, shortsBack: null }
 
   return (
     <div style={{
@@ -60,23 +75,22 @@ export default function App() {
           border: '0.5px solid rgba(201,169,106,0.3)',
           borderRadius: 24, padding: 3, gap: 2,
         }}>
-          {['model', 'realistic'].map(mode => (
+          {MODES.map(({ key, label }) => (
             <button
-              key={mode}
-              onClick={() => setViewMode(mode)}
+              key={key}
+              onClick={() => setViewMode(key)}
               style={{
-                background: viewMode === mode ? '#C9A96A' : 'transparent',
+                background: viewMode === key ? '#C9A96A' : 'transparent',
                 border: 'none',
-                color: viewMode === mode ? '#0a1628' : 'rgba(255,255,255,0.45)',
+                color: viewMode === key ? '#0a1628' : 'rgba(255,255,255,0.45)',
                 borderRadius: 20, padding: '5px 14px',
                 fontSize: 11, letterSpacing: '0.08em',
                 cursor: 'pointer', fontFamily: 'system-ui, sans-serif',
-                fontWeight: viewMode === mode ? 600 : 400,
-                textTransform: 'capitalize',
+                fontWeight: viewMode === key ? 600 : 400,
                 transition: 'all 0.18s',
               }}
             >
-              {mode === 'model' ? '3D Model' : 'Realistic'}
+              {label}
             </button>
           ))}
         </div>
