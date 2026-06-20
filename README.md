@@ -1,6 +1,15 @@
 # Vancouver 2026 — Interactive Kit Viewer
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-View%20Now-C9A86A?style=for-the-badge&logo=github)](https://johnsonl111.github.io/interactive-3d-devin-worldcup-model/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+[![Three.js](https://img.shields.io/badge/Three.js-r165-black?style=for-the-badge&logo=threedotjs)](https://threejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+
 > A real-time 3D showcase of the Vancouver FIFA World Cup 2026 Host City Kit concept. Explore every design detail of the jersey and shorts in an immersive, interactive experience — drag, flip, zoom, and discover the story woven into every stitch.
+
+![Kit Viewer Demo](docs/demo.gif)
+
+> **To generate the GIF:** Open the live app at `localhost:5173`, record a ~6 second screen capture showing the auto-rotate, a flip, and a hotspot zoom using [ScreenToGif](https://www.screentogif.com/) or Xbox Game Bar (`Win+G`), then save it to `docs/demo.gif`.
 
 ---
 
@@ -81,6 +90,17 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 npm run build
 npm run preview
 ```
+
+### Deploy to GitHub Pages
+
+```bash
+npm run deploy
+```
+
+This builds the project and pushes the `dist/` folder to the `gh-pages` branch. The live demo will be available at:
+`https://johnsonl111.github.io/interactive-3d-devin-worldcup-model/`
+
+> Make sure GitHub Pages is enabled in your repo settings under **Settings → Pages → Source → gh-pages branch**.
 
 ---
 
