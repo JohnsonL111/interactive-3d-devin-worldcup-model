@@ -121,6 +121,7 @@ export default function JerseyViewer3D({ onHotspotClick }) {
 
     // Load GLB
     const loader = new GLTFLoader()
+    const texLoader = new THREE.TextureLoader()
     loader.load(
       MODEL_PATH,
       (gltf) => {
@@ -136,6 +137,25 @@ export default function JerseyViewer3D({ onHotspotClick }) {
         model.position.sub(center.multiplyScalar(scale))
 
         jerseyGroup.add(model)
+
+        // Overlay front.png as a transparent texture plane on the jersey front
+        texLoader.load('/images/front.png', (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace
+          const planeW = size.x * scale
+          const planeH = size.y * scale
+          const planeZ = (size.z * scale) / 2 + 0.005
+          const geo = new THREE.PlaneGeometry(planeW, planeH)
+          const mat = new THREE.MeshBasicMaterial({
+            map: tex,
+            transparent: true,
+            depthWrite: false,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+          })
+          const overlay = new THREE.Mesh(geo, mat)
+          overlay.position.set(0, 0, planeZ)
+          jerseyGroup.add(overlay)
+        })
 
         // Add hotspot sprites
         HOTSPOTS.forEach(h => {
