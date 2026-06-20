@@ -1,4 +1,39 @@
 export const HOTSPOT_DATA = {
+  shorts_blossom: {
+    eyebrow: 'Signature Motif', title: 'Cherry Blossom Detail',
+    desc: 'A cascade of sakura blossoms blooms from the lower-left corner of the shorts, echoing the jersey\'s shoulder motif and unifying the full kit.',
+    specs: [['Placement','Lower left leg'],['Technique','Sublimation print'],['Colors','Sakura Pink + Gold accent']],
+    swatches: ['#F0B8C8','#E898B0','#C9A86A','#0A1E42'],
+    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A1E42" rx="8"/><g opacity="0.9"><ellipse cx="80" cy="45" rx="9" ry="6" fill="#F0B8C8" transform="rotate(-20,80,45)"/><ellipse cx="92" cy="38" rx="8" ry="5.5" fill="#E898B0" transform="rotate(15,92,38)"/><ellipse cx="74" cy="52" rx="8" ry="5" fill="#F5C5D0" transform="rotate(-45,74,52)"/><circle cx="83" cy="45" r="3" fill="#C9A86A"/></g><line x1="55" y1="65" x2="82" y2="43" stroke="#7A4858" stroke-width="1.8" opacity="0.8"/></svg>`
+  },
+  shorts_number: {
+    eyebrow: 'Kit Numbering', title: 'Squad Number "26"',
+    desc: 'Bold gold "26" marking the FIFA World Cup 2026 edition. Positioned at the lower-left thigh in traditional football kit style.',
+    specs: [['Year','FIFA World Cup 2026'],['Font','Custom athletic bold'],['Color','Gold — #C9A86A'],['Position','Lower left thigh']],
+    swatches: ['#C9A86A','#B8973A','#0A1E42','#162D5A'],
+    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A1E42" rx="8"/><text x="100" y="58" text-anchor="middle" fill="#C9A86A" font-size="46" font-weight="bold" font-family="system-ui">26</text></svg>`
+  },
+  shorts_waves: {
+    eyebrow: 'Textile Detail', title: 'Topographic Wave Lines',
+    desc: 'Gold wave lines ripple across the shorts lower half, mirroring the ocean current patterns on the jersey. Subtle tone-on-tone at a distance, glowing gold in low light.',
+    specs: [['Technique','Gold thread jacquard'],['Pattern','Pacific tidal currents'],['Visibility','Reflective in low light']],
+    swatches: ['#C9A86A','#B8973A','#0A1E42','#0D2550'],
+    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A1E42" rx="8"/><path d="M10,22 Q40,15 70,22 Q100,29 130,22 Q160,15 190,22" fill="none" stroke="#C9A86A" stroke-width="1.5" opacity="0.9"/><path d="M5,40 Q38,33 72,40 Q106,47 136,40 Q162,33 195,40" fill="none" stroke="#C9A86A" stroke-width="1.2" opacity="0.7"/><path d="M12,58 Q48,51 84,58 Q120,65 152,58 Q172,51 195,58" fill="none" stroke="#C9A86A" stroke-width="0.9" opacity="0.5"/></svg>`
+  },
+  shorts_hem: {
+    eyebrow: 'Safety Feature', title: 'Reflective Hem Band',
+    desc: 'Retroreflective hem band matching the jersey — activated in low-light for full-kit 360° player visibility. Gold accent stripe unifies the kit in daylight.',
+    specs: [['Material','Retroreflective tape'],['Activation','0.1 lux threshold'],['Width','8mm continuous band']],
+    swatches: ['#DDEEFF','#EEF4FF','#C9A86A','#0A1E42'],
+    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A1E42" rx="8"/><rect x="10" y="46" width="180" height="14" fill="rgba(220,230,245,0.35)" rx="2"/><rect x="10" y="46" width="180" height="5" fill="rgba(255,255,255,0.8)" rx="2"/><rect x="10" y="59" width="180" height="3" fill="#C9A86A" opacity="0.9"/></svg>`
+  },
+  shorts_maple: {
+    eyebrow: 'National Symbol', title: 'Back Maple Leaf',
+    desc: 'Gold maple leaf centred on the back waistband — Canada\'s emblem anchoring the rear of the kit and complementing the jersey\'s chest emblem.',
+    specs: [['Technique','Gold embroidery'],['Size','32mm'],['Position','Back centre waistband']],
+    swatches: ['#C9A86A','#B8973A','#0A1E42','#162D5A'],
+    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A1E42" rx="8"/><g transform="translate(100,40) scale(2.0)"><path d="M0,-18 L2.5,-8 L10,-9 L6.5,0 L14,7 L7,5.5 L8.5,14 L0,10 L-8.5,14 L-7,5.5 L-14,7 L-6.5,0 L-10,-9 L-2.5,-8 Z" fill="#C9A86A"/></g></svg>`
+  },
   blossom: {
     eyebrow: 'Signature Motif', title: 'Cherry Blossoms',
     desc: 'Scattered sakura petals cascade across the upper left shoulder, symbolizing renewal, community, and the fleeting beauty of spring in Vancouver.',

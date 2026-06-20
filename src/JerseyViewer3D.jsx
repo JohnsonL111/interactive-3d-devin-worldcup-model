@@ -235,7 +235,7 @@ const HOTSPOTS_BACK = [
   { id:'coords', u:0.50, v:0.91, label:'Coordinate Tag' },
 ]
 
-export default function JerseyViewer3D({ onHotspotClick }) {
+export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX }) {
   const mountRef = useRef(null)
   const stateRef = useRef({
     renderer:null, scene:null, camera:null, jerseyGroup:null,
@@ -379,6 +379,10 @@ export default function JerseyViewer3D({ onHotspotClick }) {
       } else if (s.autoRotate) {
         s.rotY += 0.004
       }
+
+      // Push to shared refs so ShortsViewer stays in sync
+      if (sharedRotY) sharedRotY.current = s.rotY
+      if (sharedRotX) sharedRotX.current = s.rotX
 
       jerseyGroup.rotation.y = s.rotY
       jerseyGroup.rotation.x = s.rotX * 0.4
