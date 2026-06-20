@@ -1,65 +1,135 @@
 export const HOTSPOT_DATA = {
-  blossom: {
-    eyebrow: 'Signature Motif', title: 'Cherry Blossoms',
-    desc: 'Scattered sakura petals cascade across the upper left shoulder, symbolizing renewal, community, and the fleeting beauty of spring in Vancouver.',
-    specs: [['Placement','Left shoulder cascade'],['Technique','Sublimation print'],['Colors','Sakura Pink + Gold accent']],
-    swatches: ['#E7C7D3','#EDA0B5','#C9A96A','#F2F3F0'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A2A5E" rx="8"/><g opacity="0.9"><ellipse cx="80" cy="38" rx="9" ry="6" fill="#F2B8C6" transform="rotate(-20,80,38)"/><ellipse cx="90" cy="33" rx="8" ry="5.5" fill="#EDA0B5" transform="rotate(15,90,33)"/><ellipse cx="76" cy="44" rx="8" ry="5" fill="#F5C5D0" transform="rotate(-45,76,44)"/><circle cx="83" cy="39" r="3" fill="#C9A96A"/></g><line x1="60" y1="25" x2="85" y2="45" stroke="#8B5A6B" stroke-width="1.5" opacity="0.7"/></svg>`
-  },
-  maple: {
-    eyebrow: 'National Symbol', title: 'Embroidered Maple Leaf',
-    desc: 'Gold embroidered maple leaf at the chest — Canada\'s icon. Gold thread catches light during play for a subtle shimmer effect.',
-    specs: [['Technique','Gold thread embroidery'],['Size','38mm'],['Position','Left chest, 80mm from collar']],
-    swatches: ['#C9A96A','#B8973A','#8C7228','#F2F3F0'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#1a1a1a" rx="8"/><g transform="translate(100,40) scale(2.2)"><path d="M0,-18 L3,-8 L13,-10 L8,0 L16,8 L8,6 L10,16 L0,12 L-10,16 L-8,6 L-16,8 L-8,0 L-13,-10 L-3,-8 Z" fill="#C9A96A"/></g></svg>`
-  },
-  collar: {
-    eyebrow: 'Cut & Construction', title: 'V-Collar Insert',
-    desc: 'Modern V-insert collar with gold trim. Cut for athletic movement with gold edge detailing that ties the design language across all kit elements.',
-    specs: [['Style','V-insert with trim'],['Material','Stretch woven'],['Accent','Gold satin edge tape']],
-    swatches: ['#E8E9E5','#C9A96A','#F2F3F0','#0A2A5E'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#e8e9e5" rx="8"/><path d="M70,10 L100,50 L130,10" fill="none" stroke="#C9A96A" stroke-width="3" stroke-linecap="round"/><path d="M70,10 Q100,5 130,10" fill="#d8d9d5" stroke="rgba(200,169,106,0.5)" stroke-width="1"/></svg>`
-  },
-  mountains: {
-    eyebrow: 'Landscape Layer', title: 'Coast Mountains',
-    desc: 'Topographic silhouettes of the Coast Mountains gradient from misty grey to deep navy. Three depth layers reflect the literal geography defining Vancouver\'s skyline.',
-    specs: [['Technique','Tone-on-tone sublimation'],['Layers','3-depth parallax gradient'],['Colors','Fog White → Coast Grey → Pacific Blue']],
-    swatches: ['#F2F3F5','#8B9AB0','#4A6A8A','#0A2A5E'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7B8FA8" stop-opacity="0.5"/><stop offset="100%" stop-color="#0A2A5E"/></linearGradient></defs><rect width="200" height="80" fill="#BBC3CF" rx="8"/><path d="M0,55 L20,30 L40,42 L60,22 L80,38 L100,18 L120,30 L140,20 L160,34 L180,22 L200,30 L200,80 L0,80 Z" fill="url(#mg)"/><path d="M0,65 L25,48 L50,55 L75,42 L100,50 L125,40 L150,52 L175,44 L200,50 L200,80 L0,80 Z" fill="#0A2A5E" opacity="0.9"/></svg>`
-  },
-  waves: {
-    eyebrow: 'Textile Detail', title: 'Ocean Wave Lines',
-    desc: 'Fine gold thread weaves Pacific tidal current patterns across the lower jersey. Visible as topographic print in direct light.',
-    specs: [['Technique','Gold thread jacquard'],['Pattern','Pacific tidal current flow'],['Visibility','Tone-on-tone + low-light glow']],
-    swatches: ['#C9A96A','#B8973A','#0A2A5E','#061830'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A2A5E" rx="8"/><path d="M10,20 Q40,13 70,20 Q100,27 130,20 Q160,13 190,20" fill="none" stroke="#C9A96A" stroke-width="1.5" opacity="0.9"/><path d="M5,38 Q38,31 72,38 Q106,45 136,38 Q162,31 195,38" fill="none" stroke="#C9A96A" stroke-width="1.2" opacity="0.7"/><path d="M12,56 Q48,49 84,56 Q120,63 152,56 Q172,49 195,56" fill="none" stroke="#C9A96A" stroke-width="0.9" opacity="0.5"/></svg>`
-  },
-  hem: {
-    eyebrow: 'Safety Feature', title: 'Reflective Hem Band',
-    desc: 'Retroreflective band running the full hem perimeter — activated in low-light for player visibility. Integrates with the gold accent stripe in daylight.',
-    specs: [['Material','Retroreflective tape'],['Activation','0.1 lux threshold'],['Width','8mm continuous band']],
-    swatches: ['#DDEEFF','#EEF4FF','#C9A96A','#0A2A5E'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#061830" rx="8"/><rect x="10" y="45" width="180" height="14" fill="rgba(220,230,245,0.35)" rx="2"/><rect x="10" y="45" width="180" height="5" fill="rgba(255,255,255,0.8)" rx="2"/><rect x="10" y="59" width="180" height="3" fill="#C9A96A" opacity="0.9"/></svg>`
-  },
-  spine: {
-    eyebrow: 'Reflective Detail', title: 'Spine Reflective Strip',
-    desc: 'Full-length retroreflective strip down the centre back spine. 360° visibility at night, doubles as the Sea to Sky route line design motif.',
-    specs: [['Length','Full torso ~350mm'],['Material','Retroreflective weave'],['Dual purpose','Safety + route line motif']],
-    swatches: ['#DDEEFF','#EEF4FF','#C9A96A','#0A2A5E'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A2A5E" rx="8"/><rect x="97" y="5" width="6" height="70" fill="rgba(220,230,245,0.4)" rx="3"/><rect x="98.5" y="5" width="3" height="70" fill="rgba(255,255,255,0.85)" rx="1.5"/></svg>`
-  },
-  route: {
-    eyebrow: 'Narrative Line', title: 'Sea to Sky Route',
-    desc: 'Dashed gold line tracing the Sea to Sky Highway from Vancouver through Squamish to Whistler. Glows in low light as a reflective element.',
-    specs: [['Route','Vancouver → Squamish → Whistler'],['Length','~120km mapped to 280mm'],['Effect','Reflective glow at night']],
-    swatches: ['#C9A96A','#B8973A','#fff','#0A2A5E'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#061830" rx="8"/><path d="M100,8 Q103,28 99,48 Q97,60 100,72" fill="none" stroke="#C9A96A" stroke-width="2.5" stroke-dasharray="6,5"/><circle cx="100" cy="10" r="4" fill="#C9A96A"/><text x="110" y="14" fill="#C9A96A" font-size="8">WHISTLER</text><circle cx="99" cy="46" r="3.5" fill="#C9A96A"/><text x="108" y="50" fill="#C9A96A" font-size="7">SQUAMISH</text><circle cx="100" cy="72" r="4" fill="#C9A96A"/><text x="62" y="76" fill="#C9A96A" font-size="7">VANCOUVER</text></svg>`
-  },
-  coords: {
-    eyebrow: 'Woven Label', title: 'Coordinate Tag',
-    desc: 'Custom woven label on the inner back hem: 49.2827° N, 123.1207° W — the exact GPS coordinates of Vancouver city centre.',
-    specs: [['Coordinates','49.2827° N / 123.1207° W'],['Technique','Woven jacquard label'],['Location','Inner back hem']],
-    swatches: ['#C9A96A','#0A2A5E','#fff','#1a1a1a'],
-    svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#1a1a1a" rx="8"/><rect x="55" y="8" width="90" height="64" rx="6" fill="#0A2A5E" stroke="#C9A96A" stroke-width="0.8"/><g transform="translate(100,32) scale(0.9)"><path d="M0,-12 L2,-5 L9,-7 L5,0 L11,5 L5,4 L7,11 L0,8 L-7,11 L-5,4 L-11,5 L-5,0 L-9,-7 L-2,-5 Z" fill="#C9A96A"/></g><text x="100" y="54" text-anchor="middle" fill="#fff" font-size="7">49.2827° N</text><text x="100" y="65" text-anchor="middle" fill="#C9A96A" font-size="7">123.1207° W</text></svg>`
-  },
-}
+    blossom: {
+        eyebrow: "Signature Motif",
+        title: "Cherry Blossoms",
+        desc: "Scattered sakura petals cascade across the upper left shoulder, symbolizing renewal, community, and the fleeting beauty of spring in Vancouver.",
+        specs: [
+            ["Placement", "Left shoulder cascade"],
+            ["Technique", "Sublimation print"],
+            ["Colors", "Sakura Pink + Gold accent"],
+        ],
+        swatches: ["#E7C7D3", "#EDA0B5", "#C9A96A", "#F2F3F0"],
+        imgPreview: `/public/images/cherryblossoms.png`,
+    },
+    mesh: {
+        eyebrow: "Ventilation System",
+        title: "Underarm Mesh Panel",
+        desc: "Engineered open-weave mesh panels run along both sides of the torso under the arms, releasing heat and moisture at peak exertion zones. The construction maintains the jersey silhouette while delivering targeted airflow where players need it most.",
+        specs: [
+            ["Material", "Open-weave polyester mesh"],
+            ["Weave", "8×8 hex open cell"],
+            ["Coverage", "Full side panel, underarm to hem"],
+        ],
+        swatches: ["#D0D8E0", "#8B9AB0", "#0A2A5E", "#061830"],
+        imgPreview: `/public/images/mesh.png`,
+    },
+    tag: {
+        eyebrow: "Product Label",
+        title: "Care & Edition Tag",
+        desc: "Woven label stitched to the bottom left interior hem, carrying kit specs, care instructions, and the Vancouver 2026 World Cup edition mark. Printed with water-based inks on a recycled woven substrate.",
+        specs: [
+            ["Location", "Bottom left interior hem"],
+            ["Ink", "Water-based, low-impact"],
+            ["Substrate", "Recycled woven jacquard"],
+        ],
+        swatches: ["#C9A96A", "#0A2A5E", "#fff", "#1a1a1a"],
+        imgPreview: `/public/images/tag.png`,
+    },
+    collar: {
+        eyebrow: "Cut & Construction",
+        title: "V-Collar Insert",
+        desc: "Modern V-insert collar with gold trim. Cut for athletic movement with gold edge detailing that ties the design language across all kit elements.",
+        specs: [
+            ["Style", "V-insert with trim"],
+            ["Material", "Stretch woven"],
+            ["Accent", "Gold satin edge tape"],
+        ],
+        swatches: ["#E8E9E5", "#C9A96A", "#F2F3F0", "#0A2A5E"],
+        svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#e8e9e5" rx="8"/><path d="M70,10 L100,50 L130,10" fill="none" stroke="#C9A96A" stroke-width="3" stroke-linecap="round"/><path d="M70,10 Q100,5 130,10" fill="#d8d9d5" stroke="rgba(200,169,106,0.5)" stroke-width="1"/></svg>`,
+    },
+    mountains: {
+        eyebrow: "Landscape Layer",
+        title: "Coast Mountains",
+        desc: "Topographic silhouettes of the Coast Mountains gradient from misty grey to deep navy. Three depth layers reflect the literal geography defining Vancouver's skyline.",
+        specs: [
+            ["Technique", "Tone-on-tone sublimation"],
+            ["Layers", "3-depth parallax gradient"],
+            ["Colors", "Fog White → Coast Grey → Pacific Blue"],
+        ],
+        swatches: ["#F2F3F5", "#8B9AB0", "#4A6A8A", "#0A2A5E"],
+        svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7B8FA8" stop-opacity="0.5"/><stop offset="100%" stop-color="#0A2A5E"/></linearGradient></defs><rect width="200" height="80" fill="#BBC3CF" rx="8"/><path d="M0,55 L20,30 L40,42 L60,22 L80,38 L100,18 L120,30 L140,20 L160,34 L180,22 L200,30 L200,80 L0,80 Z" fill="url(#mg)"/><path d="M0,65 L25,48 L50,55 L75,42 L100,50 L125,40 L150,52 L175,44 L200,50 L200,80 L0,80 Z" fill="#0A2A5E" opacity="0.9"/></svg>`,
+    },
+    fabric: {
+        eyebrow: "Base Material",
+        title: "Performance Knit",
+        desc: "The main body is cut from a 130gsm 4-way stretch performance knit — lightweight, moisture-wicking, and UV-resistant. Engineered for the range of conditions across a Canadian summer tournament, from coastal fog to interior heat.",
+        specs: [
+            ["Weight", "130 gsm"],
+            ["Composition", "88% recycled polyester, 12% elastane"],
+            ["Properties", "Moisture-wick · UV50+ · 4-way stretch"],
+        ],
+        swatches: ["#C8D0DC", "#8B9AB0", "#0A2A5E", "#061830"],
+        imgPreview: `
+    /public/images/material.png`,
+    },
+    waves: {
+        eyebrow: "Textile Detail",
+        title: "Ocean Wave Lines",
+        desc: "Fine gold thread weaves Pacific tidal current patterns across the lower jersey. Visible as topographic print in direct light.",
+        specs: [
+            ["Technique", "Gold thread jacquard"],
+            ["Pattern", "Pacific tidal current flow"],
+            ["Visibility", "Tone-on-tone + low-light glow"],
+        ],
+        swatches: ["#C9A96A", "#B8973A", "#0A2A5E", "#061830"],
+        svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#0A2A5E" rx="8"/><path d="M10,20 Q40,13 70,20 Q100,27 130,20 Q160,13 190,20" fill="none" stroke="#C9A96A" stroke-width="1.5" opacity="0.9"/><path d="M5,38 Q38,31 72,38 Q106,45 136,38 Q162,31 195,38" fill="none" stroke="#C9A96A" stroke-width="1.2" opacity="0.7"/><path d="M12,56 Q48,49 84,56 Q120,63 152,56 Q172,49 195,56" fill="none" stroke="#C9A96A" stroke-width="0.9" opacity="0.5"/></svg>`,
+    },
+    hem: {
+        eyebrow: "Safety Feature",
+        title: "Reflective Hem Band",
+        desc: "Retroreflective band running the full hem perimeter — activated in low-light for player visibility. Integrates with the gold accent stripe in daylight.",
+        specs: [
+            ["Material", "Retroreflective tape"],
+            ["Activation", "0.1 lux threshold"],
+            ["Width", "8mm continuous band"],
+        ],
+        swatches: ["#DDEEFF", "#EEF4FF", "#C9A96A", "#0A2A5E"],
+        svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#061830" rx="8"/><rect x="10" y="45" width="180" height="14" fill="rgba(220,230,245,0.35)" rx="2"/><rect x="10" y="45" width="180" height="5" fill="rgba(255,255,255,0.8)" rx="2"/><rect x="10" y="59" width="180" height="3" fill="#C9A96A" opacity="0.9"/></svg>`,
+    },
+    spine: {
+        eyebrow: "Reflective Detail",
+        title: "Spine Reflective Strip",
+        desc: "Full-length retroreflective strip down the centre back spine. 360° visibility at night, doubles as the Sea to Sky route line design motif.",
+        specs: [
+            ["Length", "Full torso ~350mm"],
+            ["Material", "Retroreflective weave"],
+            ["Dual purpose", "Safety + route line motif"],
+        ],
+        swatches: ["#DDEEFF", "#EEF4FF", "#C9A96A", "#0A2A5E"],
+        imgPreview: `/public/images/back.png`,
+    },
+    route: {
+        eyebrow: "Narrative Line",
+        title: "Sea to Sky Route",
+        desc: "Dashed gold line tracing the Sea to Sky Highway from Vancouver through Squamish to Whistler. Glows in low light as a reflective element.",
+        specs: [
+            ["Route", "Vancouver → Squamish → Whistler"],
+            ["Length", "~120km mapped to 280mm"],
+            ["Effect", "Reflective glow at night"],
+        ],
+        swatches: ["#C9A96A", "#B8973A", "#fff", "#0A2A5E"],
+        svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#061830" rx="8"/><path d="M100,8 Q103,28 99,48 Q97,60 100,72" fill="none" stroke="#C9A96A" stroke-width="2.5" stroke-dasharray="6,5"/><circle cx="100" cy="10" r="4" fill="#C9A96A"/><text x="110" y="14" fill="#C9A96A" font-size="8">WHISTLER</text><circle cx="99" cy="46" r="3.5" fill="#C9A96A"/><text x="108" y="50" fill="#C9A96A" font-size="7">SQUAMISH</text><circle cx="100" cy="72" r="4" fill="#C9A96A"/><text x="62" y="76" fill="#C9A96A" font-size="7">VANCOUVER</text></svg>`,
+    },
+    coords: {
+        eyebrow: "Woven Label",
+        title: "Coordinate Tag",
+        desc: "Custom woven label on the inner back hem: 49.2827° N, 123.1207° W — the exact GPS coordinates of Vancouver city centre.",
+        specs: [
+            ["Coordinates", "49.2827° N / 123.1207° W"],
+            ["Technique", "Woven jacquard label"],
+            ["Location", "Inner back hem"],
+        ],
+        swatches: ["#C9A96A", "#0A2A5E", "#fff", "#1a1a1a"],
+        svgPreview: `<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="#1a1a1a" rx="8"/><rect x="55" y="8" width="90" height="64" rx="6" fill="#0A2A5E" stroke="#C9A96A" stroke-width="0.8"/><g transform="translate(100,32) scale(0.9)"><path d="M0,-12 L2,-5 L9,-7 L5,0 L11,5 L5,4 L7,11 L0,8 L-7,11 L-5,4 L-11,5 L-5,0 L-9,-7 L-2,-5 Z" fill="#C9A96A"/></g><text x="100" y="54" text-anchor="middle" fill="#fff" font-size="7">49.2827° N</text><text x="100" y="65" text-anchor="middle" fill="#C9A96A" font-size="7">123.1207° W</text></svg>`,
+    },
+};
