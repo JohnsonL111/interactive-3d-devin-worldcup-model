@@ -238,28 +238,23 @@ const HOTSPOTS_BACK = [
 export default function JerseyViewer3D({ onHotspotClick }) {
   const mountRef = useRef(null)
   const stateRef = useRef({
-    renderer:null, scene:null, camera:null, jerseyMesh:null,
+    renderer:null, scene:null, camera:null, jerseyGroup:null,
     animFrameId:null, isDragging:false, prevMouse:{x:0,y:0},
     rotY:0.3, rotX:0, autoRotate:true, isFront:true,
-    frontTexture:null, backTexture:null,
+    flipping:false, flipStartY:0, flipTargetY:0, flipProgress:0,
     hotspotSprites:[], autoRotateTimer:null,
   })
 
   const flip = useCallback(() => {
     const s = stateRef.current
-    s.isFront = !s.isFront
-    if (s.jerseyMesh) {
-      s.jerseyMesh.material.map = s.isFront ? s.frontTexture : s.backTexture
-      s.jerseyMesh.material.needsUpdate = true
-    }
-    s.hotspotSprites.forEach(sprite => {
-      s.scene.remove(sprite)
-    })
-    s.hotspotSprites = []
-    addHotspots(s, s.isFront ? HOTSPOTS : HOTSPOTS_BACK)
+    if (s.flipping) return
+    s.flipping = true
+    s.flipStartY = s.rotY
+    s.flipTargetY = s.rotY + Math.PI
+    s.flipProgress = 0
   }, [])
 
-  function addHotspots(s, list) {
+  function addHotspots(s, list, isFrontSide) {
     list.forEach(h => {
       const spriteCanvas = document.createElement('canvas')
       spriteCanvas.width = 128; spriteCanvas.height = 128
@@ -272,13 +267,16 @@ export default function JerseyViewer3D({ onHotspotClick }) {
       const spriteMat = new THREE.SpriteMaterial({ map:spriteTex, transparent:true, opacity:0.9, depthTest:false })
       const sprite = new THREE.Sprite(spriteMat)
       sprite.scale.set(0.12,0.12,1)
-      sprite.userData = { id: h.id }
+      // tag which face this hotspot belongs to so we can show/hide per frame
+      sprite.userData = { id: h.id, isFront: isFrontSide }
       // Map UV to world position on the jersey mesh
       const jerseyW = 2 * (h.u < 0.12 ? 0.52 + h.u * 0.8 : h.u < 0.30 ? 0.62 - (h.u-0.12)*0.3 : 0.57)
       const wx = (h.u - 0.5) * jerseyW * 1.2
       const wy = 1.4 - h.v * 2.8
-      sprite.position.set(wx, wy, 0.35)
-      s.scene.add(sprite)
+      // Front hotspots sit in front (+z), back hotspots behind (-z) of the group
+      const wz = isFrontSide ? 0.35 : -0.35
+      sprite.position.set(wx, wy, wz)
+      s.jerseyGroup.add(sprite)
       s.hotspotSprites.push(sprite)
     })
   }
@@ -307,14 +305,34 @@ export default function JerseyViewer3D({ onHotspotClick }) {
     const rim = new THREE.DirectionalLight(0x4080C0,0.4); rim.position.set(0,-1,-3); scene.add(rim)
 
     const frontTex = new THREE.CanvasTexture(paintJerseyTexture(true))
-    const backTex  = new THREE.CanvasTexture(paintJerseyTexture(false))
-    frontTex.colorSpace = THREE.SRGBColorSpace; backTex.colorSpace = THREE.SRGBColorSpace
-    s.frontTexture = frontTex; s.backTexture = backTex
+    frontTex.colorSpace = THREE.SRGBColorSpace
+
+    // Group holds all jersey parts so they rotate together
+    const jerseyGroup = new THREE.Group()
+    scene.add(jerseyGroup)
+    s.jerseyGroup = jerseyGroup
 
     const jerseyGeo = buildJerseyGeometry()
-    const jerseyMat = new THREE.MeshStandardMaterial({ map:frontTex, roughness:0.75, metalness:0.05 })
-    const jerseyMesh = new THREE.Mesh(jerseyGeo, jerseyMat)
-    scene.add(jerseyMesh); s.jerseyMesh = jerseyMesh
+
+    // Front face mesh (visible from front, +z)
+    const frontMat = new THREE.MeshStandardMaterial({ map:frontTex, roughness:0.75, metalness:0.05, side:THREE.FrontSide })
+    const frontMesh = new THREE.Mesh(jerseyGeo, frontMat)
+    jerseyGroup.add(frontMesh)
+
+    // Back face mesh — same geometry rotated 180° so it faces the camera when flipped.
+    // Because the rotation mirrors UVs horizontally, we pre-mirror the back canvas so text reads correctly.
+    const backCanvas = paintJerseyTexture(false)
+    const mirroredBackCanvas = document.createElement('canvas')
+    mirroredBackCanvas.width = backCanvas.width; mirroredBackCanvas.height = backCanvas.height
+    const mCtx = mirroredBackCanvas.getContext('2d')
+    mCtx.translate(backCanvas.width, 0); mCtx.scale(-1, 1)
+    mCtx.drawImage(backCanvas, 0, 0)
+    const mirroredBackTex = new THREE.CanvasTexture(mirroredBackCanvas)
+    mirroredBackTex.colorSpace = THREE.SRGBColorSpace
+    const backMat = new THREE.MeshStandardMaterial({ map:mirroredBackTex, roughness:0.75, metalness:0.05, side:THREE.FrontSide })
+    const backMesh = new THREE.Mesh(jerseyGeo, backMat)
+    backMesh.rotation.y = Math.PI
+    jerseyGroup.add(backMesh)
 
     // Sleeve texture
     const sc2 = document.createElement('canvas'); sc2.width=256; sc2.height=512
@@ -324,9 +342,10 @@ export default function JerseyViewer3D({ onHotspotClick }) {
     sc2ctx.fillStyle=slG; sc2ctx.fillRect(0,0,256,512)
     const sleeveTex = new THREE.CanvasTexture(sc2); sleeveTex.colorSpace=THREE.SRGBColorSpace
     const sleeveMat = new THREE.MeshStandardMaterial({ map:sleeveTex, roughness:0.78, metalness:0.04 })
-    ;[-1,1].forEach(side => { const m=new THREE.Mesh(buildSleeveGeometry(side),sleeveMat); scene.add(m) })
+    ;[-1,1].forEach(side => { const m=new THREE.Mesh(buildSleeveGeometry(side),sleeveMat); jerseyGroup.add(m) })
 
-    addHotspots(s, HOTSPOTS)
+    addHotspots(s, HOTSPOTS, true)
+    addHotspots(s, HOTSPOTS_BACK, false)
 
     // Raycaster for hotspot clicks
     const raycaster = new THREE.Raycaster()
@@ -345,21 +364,38 @@ export default function JerseyViewer3D({ onHotspotClick }) {
     }
     renderer.domElement.addEventListener('click', onCanvasClick)
 
+    function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t }
+
     function animate() {
       s.animFrameId = requestAnimationFrame(animate)
-      if (s.autoRotate) s.rotY += 0.004
-      jerseyMesh.rotation.y = s.rotY
-      jerseyMesh.rotation.x = s.rotX * 0.4
-      s.hotspotSprites.forEach(sprite => {
-        sprite.rotation.y = s.rotY
-        sprite.rotation.x = s.rotX * 0.4
+
+      if (s.flipping) {
+        s.flipProgress = Math.min(1, s.flipProgress + 0.035)
+        s.rotY = s.flipStartY + easeInOut(s.flipProgress) * (s.flipTargetY - s.flipStartY)
+        if (s.flipProgress >= 1) {
+          s.rotY = s.flipTargetY
+          s.flipping = false
+        }
+      } else if (s.autoRotate) {
+        s.rotY += 0.004
+      }
+
+      jerseyGroup.rotation.y = s.rotY
+      jerseyGroup.rotation.x = s.rotX * 0.4
+
+      // Show only the hotspots belonging to the face currently pointing toward the camera.
+      // cos(rotY) > 0 means the front face (+z) is facing the camera.
+      const frontFacing = Math.cos(s.rotY) > 0
+      s.hotspotSprites.forEach(sp => {
+        sp.visible = sp.userData.isFront === frontFacing
       })
+
       renderer.render(scene, camera)
     }
     animate()
 
     function onPointerDown(e) {
-      s.isDragging = false; s.autoRotate = false
+      s.isDragging = false; s.autoRotate = false; s.flipping = false
       s.prevMouse = { x:e.clientX, y:e.clientY }
       s._dragStart = { x:e.clientX, y:e.clientY }
     }
