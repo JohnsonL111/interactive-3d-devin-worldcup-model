@@ -1,4 +1,4 @@
-# Vancouver 2026 — Interactive Kit Viewer
+# 26 Studio
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-View%20Now-C9A86A?style=for-the-badge&logo=github)](https://johnsonl111.github.io/interactive-3d-devin-worldcup-model/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
