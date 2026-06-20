@@ -235,7 +235,7 @@ const HOTSPOTS_BACK = [
   { id:'coords', u:0.50, v:0.91, label:'Coordinate Tag' },
 ]
 
-export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX }) {
+export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX, onFlipReady, onZoomBackReady }) {
   const mountRef = useRef(null)
   const stateRef = useRef({
     renderer:null, scene:null, camera:null, jerseyGroup:null,
@@ -243,6 +243,11 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX 
     rotY:0.3, rotX:0, autoRotate:true, isFront:true,
     flipping:false, flipStartY:0, flipTargetY:0, flipProgress:0,
     hotspotSprites:[], autoRotateTimer:null,
+    // zoom
+    zoomActive:false, zoomIn:false, zoomProgress:0,
+    zoomFromPos: new THREE.Vector3(), zoomFromTarget: new THREE.Vector3(),
+    zoomToPos:   new THREE.Vector3(), zoomToTarget:   new THREE.Vector3(),
+    camTarget: new THREE.Vector3(0, 0.1, 0),   // current look-at point
   })
 
   const flip = useCallback(() => {
@@ -253,6 +258,38 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX 
     s.flipTargetY = s.rotY + Math.PI
     s.flipProgress = 0
   }, [])
+
+  // Zoom toward a world-space point on the jersey, then snap back on close
+  const zoomToHotspot = useCallback((worldPos) => {
+    const s = stateRef.current
+    if (!s.camera) return
+    s.autoRotate = false
+    s.zoomActive = true
+    s.zoomIn = true
+    s.zoomProgress = 0
+    s.zoomFromPos.copy(s.camera.position)
+    s.zoomFromTarget.copy(s.camTarget)
+    s.zoomToTarget.copy(worldPos)
+    const dir = new THREE.Vector3(0, 0, 1)
+    s.zoomToPos.copy(worldPos).addScaledVector(dir, 1.4)
+  }, [])
+
+  const zoomBack = useCallback(() => {
+    const s = stateRef.current
+    if (!s.camera) return
+    s.zoomActive = true
+    s.zoomIn = false
+    s.zoomProgress = 0
+    s.zoomFromPos.copy(s.camera.position)
+    s.zoomFromTarget.copy(s.camTarget)
+    s.zoomToPos.set(0, 0.1, 3.8)
+    s.zoomToTarget.set(0, 0.1, 0)
+    s.autoRotateTimer = setTimeout(() => { s.autoRotate = true }, 1200)
+  }, [])
+
+  // Expose flip and zoomBack to parent — must come after both are declared
+  useEffect(() => { if (onFlipReady) onFlipReady(flip) }, [flip, onFlipReady])
+  useEffect(() => { if (onZoomBackReady) onZoomBackReady(zoomBack) }, [zoomBack, onZoomBackReady])
 
   function addHotspots(s, list, isFrontSide) {
     list.forEach(h => {
@@ -359,7 +396,12 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX 
       raycaster.setFromCamera(mouse2D, camera)
       const hits = raycaster.intersectObjects(s.hotspotSprites)
       if (hits.length > 0) {
-        onHotspotClick(hits[0].object.userData.id)
+        const sprite = hits[0].object
+        // get the sprite's current world position (it rotates with the group)
+        const worldPos = new THREE.Vector3()
+        sprite.getWorldPosition(worldPos)
+        zoomToHotspot(worldPos)
+        onHotspotClick(sprite.userData.id)
       }
     }
     renderer.domElement.addEventListener('click', onCanvasClick)
@@ -387,6 +429,16 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX 
       jerseyGroup.rotation.y = s.rotY
       jerseyGroup.rotation.x = s.rotX * 0.4
 
+      // Smooth camera zoom
+      if (s.zoomActive) {
+        s.zoomProgress = Math.min(1, s.zoomProgress + 0.04)
+        const e = easeInOut(s.zoomProgress)
+        camera.position.lerpVectors(s.zoomFromPos, s.zoomToPos, e)
+        s.camTarget.lerpVectors(s.zoomFromTarget, s.zoomToTarget, e)
+        camera.lookAt(s.camTarget)
+        if (s.zoomProgress >= 1) s.zoomActive = false
+      }
+
       // Show only the hotspots belonging to the face currently pointing toward the camera.
       // cos(rotY) > 0 means the front face (+z) is facing the camera.
       const frontFacing = Math.cos(s.rotY) > 0
@@ -402,6 +454,9 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX 
       s.isDragging = false; s.autoRotate = false; s.flipping = false
       s.prevMouse = { x:e.clientX, y:e.clientY }
       s._dragStart = { x:e.clientX, y:e.clientY }
+      // If zoomed in, zoom back out when user starts dragging
+      if (!s.zoomActive && !s.zoomIn) return
+      zoomBack()
     }
     function onPointerMove(e) {
       if (!s._dragStart) return
@@ -439,20 +494,5 @@ export default function JerseyViewer3D({ onHotspotClick, sharedRotY, sharedRotX 
     }
   }, [])
 
-  return (
-    <div style={{ position:'relative', width:'100%', height:'100%' }}>
-      <div ref={mountRef} style={{ width:'100%', height:'100%', cursor:'grab' }} />
-      <button onClick={flip} style={{
-        position:'absolute', bottom:20, right:20,
-        background:'rgba(10,22,40,0.85)', border:'0.5px solid #C9A96A',
-        color:'#C9A96A', borderRadius:20, padding:'8px 18px',
-        fontSize:12, letterSpacing:'0.08em', cursor:'pointer', fontFamily:'sans-serif',
-      }}>Flip ↺</button>
-      <p style={{
-        position:'absolute', bottom:24, left:20,
-        fontSize:11, color:'rgba(255,255,255,0.35)',
-        fontFamily:'sans-serif', letterSpacing:'0.1em', margin:0,
-      }}>drag to rotate · tap dots to explore</p>
-    </div>
-  )
+  return <div ref={mountRef} style={{ width:'100%', height:'100%', cursor:'grab' }} />
 }

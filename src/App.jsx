@@ -11,6 +11,14 @@ export default function App() {
   const rotY = useRef(0.3)
   const rotX = useRef(0)
 
+  // flip / zoomBack functions exposed by JerseyViewer3D once it mounts
+  const flipFn = useRef(null)
+  const zoomBackFn = useRef(null)
+  const handleFlipReady = useCallback((fn) => { flipFn.current = fn }, [])
+  const handleZoomBackReady = useCallback((fn) => { zoomBackFn.current = fn }, [])
+  const handleFlip = useCallback(() => { flipFn.current?.() }, [])
+  const handleClose = useCallback(() => { zoomBackFn.current?.(); setActiveDetail(null) }, [])
+
   const handleHotspot = useCallback((id) => {
     setActiveDetail(HOTSPOT_DATA[id] || null)
   }, [])
@@ -44,14 +52,9 @@ export default function App() {
             onHotspotClick={handleHotspot}
             sharedRotY={rotY}
             sharedRotX={rotX}
+            onFlipReady={handleFlipReady}
+            onZoomBackReady={handleZoomBackReady}
           />
-        </div>
-
-        {/* Divider label */}
-        <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 12, padding: '0 24px' }}>
-          <div style={{ flex: 1, height: '0.5px', background: 'rgba(201,169,106,0.18)' }} />
-          <span style={{ fontSize: 9, letterSpacing: '0.18em', color: 'rgba(201,169,106,0.45)', textTransform: 'uppercase' }}>Shorts</span>
-          <div style={{ flex: 1, height: '0.5px', background: 'rgba(201,169,106,0.18)' }} />
         </div>
 
         {/* Shorts — takes remaining ~42% */}
@@ -64,14 +67,19 @@ export default function App() {
         </div>
       </div>
 
-      {/* Footer tags */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 24, padding: '8px 0 12px', flexShrink: 0 }}>
-        {['Rooted Here', 'Moving Together', 'Coast Mountains'].map(tag => (
-          <span key={tag} style={{ fontSize: 10, color: 'rgba(255,255,255,0.30)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{tag}</span>
-        ))}
+      {/* Footer — controls + tags */}
+      <div style={{ flexShrink: 0, padding: '10px 24px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.10em', margin: 0 }}>
+          drag to rotate · tap dots to explore
+        </p>
+        <button onClick={handleFlip} style={{
+          background: 'rgba(10,22,40,0.85)', border: '0.5px solid #C9A96A',
+          color: '#C9A96A', borderRadius: 20, padding: '8px 18px',
+          fontSize: 12, letterSpacing: '0.08em', cursor: 'pointer', fontFamily: 'system-ui, sans-serif',
+        }}>Flip ↺</button>
       </div>
 
-      {activeDetail && <DetailPanel data={activeDetail} onClose={() => setActiveDetail(null)} />}
+      {activeDetail && <DetailPanel data={activeDetail} onClose={handleClose} />}
     </div>
   )
 }
